@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: examengine
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 1 --threads 8 -b 0.0.0.0:$PORT app:app
+    healthCheckPath: /healthz
+    envVars:
+      - {key: COOKIE_SECURE, value: "1"}
+      - {key: BEHIND_PROXY, value: "1"}
+      - {key: SECRET_KEY, generateValue: true}
+      - {key: EXAMS_PER_DAY, value: "2"}
+      - {key: AI_ORDER, value: "gemini,groq,openrouter,mistral,openai,anthropic,deepseek"}
+      - {key: ADMIN_TOKEN, generateValue: true}
+      - {key: GEMINI_API_KEY, sync: false}
+      - {key: GROQ_API_KEY, sync: false}
+      - {key: OPENROUTER_API_KEY, sync: false}
+      - {key: MISTRAL_API_KEY, sync: false}
+      - {key: OPENAI_API_KEY, sync: false}
+      - {key: ANTHROPIC_API_KEY, sync: false}
+      - {key: DEEPSEEK_API_KEY, sync: false}
